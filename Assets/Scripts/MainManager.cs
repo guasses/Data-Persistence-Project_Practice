@@ -12,6 +12,7 @@ public class MainManager : MonoBehaviour
 
     public Text ScoreText;
     public GameObject GameOverText;
+    public MainUIManager mainUIManagerScript;
     
     private bool m_Started = false;
     private int m_Points;
@@ -70,6 +71,13 @@ public class MainManager : MonoBehaviour
 
     public void GameOver()
     {
+        if(m_Points > Persistent.Instance.BestScore)
+        {
+            Persistent.Instance.BestScore = m_Points;
+            Persistent.Instance.PlayerName = Persistent.Instance.TempPlayerName;
+            Persistent.Instance.SaveData();
+        }
+        mainUIManagerScript.SetBestScoreText(Persistent.Instance.PlayerName, Persistent.Instance.BestScore);
         m_GameOver = true;
         GameOverText.SetActive(true);
     }
